@@ -33,8 +33,8 @@ character_key+=['I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X',
 character_key+=['Z','0','1','2','3','4','5','6','7','8','9','!','@','#','$','%','^']
 character_key+=['&','*','-','_','/','=','.',' ',':','+','?','(',')','~','<','>']
 
-otp_file_name='mdata_otp_data'
-secret_vault_file_name='mdata_vault_data'
+otp_file_name='data_otp'
+secret_vault_file_name='data_vault'
 
 # path to your favorite editor. 
 # this will be correct for most linux and most apple os

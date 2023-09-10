@@ -1,7 +1,7 @@
 
 # project specific files
-mdata_otp_data
-mdata_vault_data
+data_otp
+data_vault
 
 .DS_Store
 **/.DS_Store

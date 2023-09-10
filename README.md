@@ -15,7 +15,7 @@ Note : The data is encrypted with a simple cypher of my own creation. This is a 
 - pip install pyotp --user
 - python mdata3
 - enter the passphrase you want to use
-- if you want to clear your data and start over just delete mdata_otp_data and mdata_vault_data
+- if you want to clear your data and start over just delete the two data files
 - if you get a decryption error this means you are entering a 
     different passphrase from what was used to encrypt the file. 
     The password is encrypted as part of the file to prevent you from 
