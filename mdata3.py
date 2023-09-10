@@ -138,7 +138,7 @@ def get_array_from_file(file_name):
     data=[]
     try:
         for line in open(file_name):
-            line=line.rstrip() 
+            line = line.replace('\n', '') 
             data.append(line)
     except FileNotFoundError:
         print('File ' + file_name + ' not found')
