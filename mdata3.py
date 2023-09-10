@@ -253,7 +253,7 @@ def main():
         print('    e - Exit')
         print('    1 - Generate OTP Codes')
         print('    2 - View Secret Vault')
-        print('    3 - Keyword search Secret Vault')
+        print('    3 - Search Secret Vault')
         print('    4 - Edit OTP name:secret pairs')
         print('    5 - Edit Secret Vault data')
         
