@@ -21,6 +21,7 @@ import subprocess
 import random
 import string
 import copy
+import hashlib
 
 #import custom packages
 # https://pypi.org/project/pyotp/
@@ -133,6 +134,13 @@ def edit_data_array(data):
     return new_data
 
 #------------------------------------------------------------------------------
+def generate_hash(data):
+    '''generate sha256 hash of input parameter'''
+    sha256 = hashlib.sha256()
+    sha256.update(data.encode('utf-8'))
+    return sha256.hexdigest()
+
+#------------------------------------------------------------------------------
 def get_array_from_file(file_name):
     '''reads a file and returns a array of the contents'''
     data=[]
@@ -237,7 +245,8 @@ def main():
     # get the passphrase
     print('===================================')
     print('    Marmot Data 3')
-    passphrase=input('Enter PassPhrase: ')
+    passphrase=generate_hash(input('Enter PassPhrase: '))
+    
     os.system('clear')
 
     # initial decrypt
