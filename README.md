@@ -13,6 +13,7 @@ Note : The data is encrypted with a simple cypher of my own creation. This is a 
 ### Install
 - get the code
 - pip install pyotp --user
+- you may need to adjust the path_to_editor variable to match your system setup and preferences
 - python mdata3
 - enter the passphrase you want to use
 - if you want to clear your data and start over just delete the two data files
@@ -21,3 +22,6 @@ Note : The data is encrypted with a simple cypher of my own creation. This is a 
     The password is encrypted as part of the file to prevent you from 
     accidentally re-saving the file with a different password
 
+Tested on Fedora Linux  
+Probably works on Mac  
+Probably doesn't work on Windows  

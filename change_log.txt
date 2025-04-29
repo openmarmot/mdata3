@@ -1,0 +1,8 @@
+mdata3 change log 
+
+----------------------------------
+April 28 2025 
+- updated timeout behavior so it exits cleanly 
+
+this fixes a long standing bug where when the program times out 
+it hangs and you have to hit enter to get it to fully exit 

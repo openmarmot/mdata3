@@ -22,10 +22,10 @@ import random
 import string
 import copy
 import hashlib
+import select
 
 #import custom packages
-# https://pypi.org/project/pyotp/
-import pyotp 
+import pyotp # https://pypi.org/project/pyotp/
 
 #global vars
 character_key=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q']
@@ -140,18 +140,7 @@ def generate_hash(data):
     sha256.update(data.encode('utf-8'))
     return sha256.hexdigest()
 
-#------------------------------------------------------------------------------
-def get_array_from_file(file_name):
-    '''reads a file and returns a array of the contents'''
-    data=[]
-    try:
-        for line in open(file_name):
-            line = line.replace('\n', '') 
-            data.append(line)
-    except FileNotFoundError:
-        print('File ' + file_name + ' not found')
-        return None
-    return data
+
 
 #------------------------------------------------------------------------------
 def generate_encryption_key(passphrase):
@@ -173,6 +162,29 @@ def generate_salt(length=20):
     length+=random.randint(0,length)
     characters = string.ascii_letters + string.digits
     return ''.join(random.choice(characters) for _ in range(length))
+
+#------------------------------------------------------------------------------
+def get_array_from_file(file_name):
+    '''reads a file and returns a array of the contents'''
+    data=[]
+    try:
+        for line in open(file_name):
+            line = line.replace('\n', '') 
+            data.append(line)
+    except FileNotFoundError:
+        print('File ' + file_name + ' not found')
+        return None
+    return data
+
+#------------------------------------------------------------------------------
+def get_input_with_timeout(prompt, timeout):
+    '''Get input with a timeout, returns None if timeout occurs'''
+    print(prompt, end='', flush=True)
+    i, _, _ = select.select([sys.stdin], [], [], timeout)
+    if i:
+        return sys.stdin.readline().strip()
+    else:
+        return None
 
 #------------------------------------------------------------------------------
 def initialize_files(file_name_array,passphrase):
@@ -245,14 +257,14 @@ def main():
     # get the passphrase
     print('===================================')
     print('    Marmot Data 3')
-    passphrase=generate_hash(input('Enter PassPhrase: '))
+    passphrase = generate_hash(input('Enter PassPhrase: '))
     
     os.system('clear')
 
     # initial decrypt
-    initialize_files([otp_file_name,secret_vault_file_name],passphrase)
-    otp_data=decrypt_file(otp_file_name,passphrase)
-    vault_data=decrypt_file(secret_vault_file_name,passphrase)
+    initialize_files([otp_file_name, secret_vault_file_name], passphrase)
+    otp_data = decrypt_file(otp_file_name, passphrase)
+    vault_data = decrypt_file(secret_vault_file_name, passphrase)
 
     # main program loop
     while True:
@@ -266,39 +278,32 @@ def main():
         print('    4 - Edit OTP name:secret pairs')
         print('    5 - Edit Secret Vault data')
         
-        q = Queue()
-        t = Thread(target=input_thread, args=(q,))
-        t.start()
-        t.join(30)  # Timeout of 30 seconds
-        if not q.empty():
-            selection = q.get()
-        else:
-            selection = "e"
+        selection = get_input_with_timeout('Enter selection: ', 30)
 
-        if selection=='e':
+        if selection is None or selection == 'e':
             os.system('clear')
             print('Encrypting and saving OTP data..')
-            encrypt_array_and_write_file(otp_data,otp_file_name,passphrase)
+            encrypt_array_and_write_file(otp_data, otp_file_name, passphrase)
             print('Encrypting and saving Vault data..')
-            encrypt_array_and_write_file(vault_data,secret_vault_file_name,passphrase)
+            encrypt_array_and_write_file(vault_data, secret_vault_file_name, passphrase)
             print('Cleanup..')
-            passphrase=None
-            otp_data=None
-            vault_data=None
+            passphrase = None
+            otp_data = None
+            vault_data = None
             print('Please close this console for security. Goodbye!')
             sys.exit()
-        elif selection=='1':
+        elif selection == '1':
             print_otp_codes(otp_data)
             input('Hit Enter to continue ')
-        elif selection=='2':
+        elif selection == '2':
             print_data_array(vault_data)
             input('Hit Enter to continue ')
-        elif selection=='3':
-            print_search_results(vault_data,input('Enter Search Keyword: '))
+        elif selection == '3':
+            print_search_results(vault_data, input('Enter Search Keyword: '))
             input('Hit Enter to continue ')
-        elif selection=='4':
-            otp_data=edit_data_array(otp_data)
-        elif selection=='5':
-            vault_data=edit_data_array(vault_data)
+        elif selection == '4':
+            otp_data = edit_data_array(otp_data)
+        elif selection == '5':
+            vault_data = edit_data_array(vault_data)
 
 main()
