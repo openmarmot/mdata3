@@ -1,6 +1,15 @@
 mdata3 change log 
 
 ----------------------------------
+May 09 2025 
+- replaced input with get_input_with_timeout where appropriate
+- added a version number
+- minor cleanup
+
+now if you forget to hit enter after doing a secret search or a otp display the app will gracefully close
+after the input times out. this used to only be the case for the main menu
+
+----------------------------------
 April 28 2025 
 - updated timeout behavior so it exits cleanly 
 

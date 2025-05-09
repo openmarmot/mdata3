@@ -13,8 +13,6 @@ vault file syntax: no limitations
 '''
 
 #import built in modules
-from queue import Queue
-from threading import Thread
 import os
 import sys
 import subprocess
@@ -40,6 +38,9 @@ secret_vault_file_name='data_vault'
 # path to your favorite editor. 
 # this will be correct for most linux and most apple os
 path_to_editor='/usr/bin/vim'
+
+#version number to make it easier to tell what code version you are running
+mdata_version=3.02
 
 #------------------------------------------------------------------------------
 def check_if_file_exists(file_name):
@@ -139,8 +140,6 @@ def generate_hash(data):
     sha256 = hashlib.sha256()
     sha256.update(data.encode('utf-8'))
     return sha256.hexdigest()
-
-
 
 #------------------------------------------------------------------------------
 def generate_encryption_key(passphrase):
@@ -256,7 +255,7 @@ def main():
     
     # get the passphrase
     print('===================================')
-    print('    Marmot Data 3')
+    print(f'    Marmot Data {mdata_version}')
     passphrase = generate_hash(input('Enter PassPhrase: '))
     
     os.system('clear')
@@ -270,7 +269,7 @@ def main():
     while True:
         os.system('clear')
         print('===================================')
-        print('    Marmot Data 3')
+        print(f'    Marmot Data {mdata_version}')
         print('    e - Exit')
         print('    1 - Generate OTP Codes')
         print('    2 - View Secret Vault')
@@ -279,7 +278,6 @@ def main():
         print('    5 - Edit Secret Vault data')
         
         selection = get_input_with_timeout('Enter selection: ', 30)
-
         if selection is None or selection == 'e':
             os.system('clear')
             print('Encrypting and saving OTP data..')
@@ -294,13 +292,13 @@ def main():
             sys.exit()
         elif selection == '1':
             print_otp_codes(otp_data)
-            input('Hit Enter to continue ')
+            get_input_with_timeout('Hit enter to continue', 30)
         elif selection == '2':
             print_data_array(vault_data)
-            input('Hit Enter to continue ')
+            get_input_with_timeout('Hit enter to continue', 30)
         elif selection == '3':
             print_search_results(vault_data, input('Enter Search Keyword: '))
-            input('Hit Enter to continue ')
+            get_input_with_timeout('Hit enter to continue', 30)
         elif selection == '4':
             otp_data = edit_data_array(otp_data)
         elif selection == '5':
